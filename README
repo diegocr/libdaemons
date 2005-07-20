@@ -1,0 +1,46 @@
+
+ Daemons IFace Library  -  README File
+=====================================================
+
+ Documentation
+----------------
+
+Docs are available from the main homepage, http://daemons.sourceforge.net/
+
+
+ Licensing
+------------
+
+Daemons IFace Library are licensed under the BSD Licence, read the 
+file LICENCE for details.
+
+
+ Installation and Usage
+-------------------------
+
+To install move libdaemons.a to your libs directory (ie /gg/m68k-amigaos/lib),
+and daemons.h to your includes dir (ie /gg/m68k-amigaos/include).
+
+To use the lib just include the header file daemons.h on your code, and link it
+with libdaemons.a as first library, ie:
+
+	gcc -noixemul dtest.c -o dtest -ldaemons
+
+Read the docs carefully.
+
+
+ Support
+----------
+
+Project:	http://sourceforge.net/projects/daemons/
+
+Forums:		http://sourceforge.net/forum/?group_id=143146
+
+Trackers:	http://sourceforge.net/tracker/?group_id=143146
+
+CVS:		http://sourceforge.net/cvs/?group_id=143146
+
+Downloads:	http://sourceforge.net/project/showfiles.php?group_id=143146
+
+
+

@@ -1,0 +1,65 @@
+
+#include <daemons.h>
+#include <stdlib.h>
+
+char *progname = "Faked HTTPd";
+unsigned int __services[] = { 80, 0 };
+
+struct SignalSemaphore sema;
+short syslog_debug = 1;
+BPTR fh;
+STRPTR buf;
+
+short http_dispatcher(struct client *c)
+{
+	STRPTR s=buf;
+	long len;
+	
+	ObtainSemaphore(&sema);
+	
+	Seek( fh, 0, OFFSET_END );
+	
+	FPrintf( fh, "client_host = %s, client_ip = %s, request:\n", c->client_host, c->client_ip);
+	Flush(fh);
+	
+	if((len = daemons_recv( c->sockfd, &s, 262144, c->SocketBase )) >0 )
+	{
+		Seek( fh, 0, OFFSET_END );
+		Write( fh, buf, len );
+		Flush(fh);
+	}
+	else Printf("ERROR RECEIVING\n");
+	
+	ReleaseSemaphore(&sema);
+	
+	return 1;
+}
+
+int main()
+{
+	if((fh = Open("httpd.log", MODE_READWRITE)))
+	{
+		InitSemaphore(&sema);
+		
+		if((buf = malloc(262144)))
+		{
+			daemons_bind_setdispatcher( 80, http_dispatcher );
+			
+			daemons_loop();
+			
+			free( buf );
+		}
+		Close( fh );
+	}
+	return 0;
+}
+
+size_t strlen(const char *string);
+size_t strlen(const char *string)
+{ const char *s=string;
+  
+  if(!(string && *string))
+  	return 0;
+  
+  do;while(*s++); return ~(string-s);
+}
